@@ -1,0 +1,16 @@
+# App context
+server:
+  servlet:
+    context-path: "/lawnmower-kata"
+
+# Actuator config
+info:
+  app:
+    description: '@project.description@'
+    version: '@project.version@'
+    artifactId: '@project.artifactId@'
+
+# Spring config
+spring:
+  application:
+    name: '@project.name@'

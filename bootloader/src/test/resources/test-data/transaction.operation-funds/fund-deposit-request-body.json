@@ -1,0 +1,8 @@
+{
+  "type": "CashDepositRetail",
+  "amount":
+  {
+    "value": 499,
+    "currency": "EUR"
+  }
+}

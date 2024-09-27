@@ -1,0 +1,28 @@
+# Enabling H2 Console
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:mower-db;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: mower-user
+    password: P@ssw0rd
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none #update validate
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    defer-datasource-initialization: true
+    show-sql: true
+  liquibase:
+    enabled: true
+    change-log: liquibase/changelog-master.xml

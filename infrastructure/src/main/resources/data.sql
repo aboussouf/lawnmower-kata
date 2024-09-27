@@ -1,0 +1,2 @@
+INSERT INTO account (account_id, balance, owner, created_at, updated_at) VALUES ('6f1e94dc-9b0d-4d71-b8f7-2dd632920cf3', 1500.00, 'John Doe', '2023-05-28', '2023-05-28');
+INSERT INTO transaction (transaction_id, date, type, amount, account_id) VALUES ('6f1e94dc-9b0d-4d71-b8f7-2dd632920cf3M1', '2023-05-28', 'Credit',60, '6f1e94dc-9b0d-4d71-b8f7-2dd632920cf3');

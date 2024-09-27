@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="hib.seq.max.value" value="9999999999999999999999999999" dbms="oracle"/>
+    <property name="current.date" value="SYS_EXTRACT_UTC(SYSTIMESTAMP)" dbms="oracle"/>
+    <property name="hib.seq.max.value" value="9223372036854775807" dbms="postgresql"/>
+    <property name="hib.seq.max.value" value="9223372036854775807" dbms="h2"/>
+    <property name="current.date" value="now()" dbms="h2"/>
+    <property name="current.date" value="CURRENT_TIMESTAMP" dbms="postgresql"/>
+    <property name="uuid_type" value="uuid" dbms="h2,postgresql"/>
+    <property name="uuid_function" value="random_uuid()" dbms="h2"/>
+    <property name="uuid_function" value="get_random_uuid()" dbms="postgresql"/>
+
+    <!-- ***************************************** CREATION HIBERNATE_SEQUENCE ******************************************************************* -->
+    <changeSet author="ali.boussouf" id="CREATION-HIBERNATE_SEQUENCE">
+        <createSequence maxValue="${hib.seq.max.value}" sequenceName="HIBERNATE_SEQUENCE" startValue="1"
+                       />
+    </changeSet>
+
+    <!-- ***************************************** CREATION OF TABLES ******************************************************************* -->
+
+    <!-- ********** CREATION TABLE ACCOUNT *********** -->
+    <changeSet id="0.0.1-1" author="ali.boussouf">
+        <createTable remarks="Table de données liées aux comptes" tableName="ACCOUNT">
+
+            <column autoIncrement="true" defaultOnNull="false" generationType="ALWAYS" name="account_id"
+                    remarks="Identifiant technique" type="NUMBER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ACCOUNT_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+            <column name="customer_id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+            </column>
+
+            <column name="type" remarks="information sur le type de compte" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" remarks="information sur le status de compte" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner" remarks="information sur le titulaire de compte" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" remarks="Champ technique - date de création de la ligne" type="timestamp with timezone" defaultValueComputed="${current.date}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" remarks="Champ technique - date de modification de la ligne" type="timestamp with timezone">
+            </column>
+
+            <column name="IDENTIFIANT" remarks="Identifiant de fonctionnel du client" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="NUM_TYPE_VOIE" remarks="numéro et type de voie de l'adresse" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="COMPLEMENT" remarks="Complement de l'adresse" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="CODE_POSTALE" remarks="Complement de l'adresse" type="varchar(6)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="VILLE" remarks="Complement de l'adresse" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="PAYS" remarks="Complement de l'adresse" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+
+        </createTable>
+    </changeSet>
+
+    <!-- ********** CREATION TABLE TB_CLIENT_PM *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TB_CLIENT_PM">
+        <createTable remarks="Table de données liées aux clients" tableName="TB_CLIENT_PM">
+
+            <column autoIncrement="true" defaultOnNull="false" generationType="ALWAYS" name="ID"
+                    remarks="Identifiant technique" type="NUMBER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TB_CLIENT_PM_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="DT_CREATION" remarks="Champ technique - date de création de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="DT_MODIFICATION" remarks="Champ technique - date de modification de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="STATUT_JURIDIQUE" remarks="statut jurique du client" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="RAISON_SOCIALE" remarks="raison sociale de l'entreprise" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ID_CLIENT" remarks="identifiant de la ligne dans la table client" type="NUMBER">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="DATE_CREATION_ENTREPRISE" remarks="date de création de l'entreprise" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <!-- ********** CREATION TABLE TB_CLIENT_PP *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TB_CLIENT_PP">
+        <createTable remarks="Table de données liées aux clients" tableName="TB_CLIENT_PP">
+
+            <column autoIncrement="true" defaultOnNull="false" generationType="ALWAYS" name="ID"
+                    remarks="Identifiant technique" type="NUMBER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TB_CLIENT_PP_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="DT_CREATION" remarks="Champ technique - date de création de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="DT_MODIFICATION" remarks="Champ technique - date de modification de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="NOM_USAGE" remarks="nom d'usage du client" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="NOM_NAISSANCE" remarks="nom de naissance du client" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="PRENOM" remarks="prenom du client" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="DATE_NAISSANCE" remarks="date de naissance du client" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CODE_COMMUNE_INSEE_NAISSANCE" remarks="code commune naissance" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="NOM_COMMUNE_NAISSANCE" remarks="nom de la commune" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CODE_PAYS_NAISSANCE" remarks="code pays de naissance" type="varchar(5)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="LIBELLE_PAYS_NAISSANCE" remarks="nom du pays de naissance " type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="CODE_SEXE" remarks="code technique du sexe" type="varchar(5)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CODE_CIVILITE" remarks="code technique de la civilité" type="varchar(5)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CODE_SITUATION_FAMILLIALE" remarks="code technique de la situation familliale"
+                    type="varchar(5)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ID_CLIENT" remarks="identifiant du client dans la table TB_CLIENT" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+
+    <!-- ********** CREATION TABLE TB_COMPTE *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TB_COMPTE">
+        <createTable remarks="Table de données liées aux clients" tableName="TB_COMPTE">
+
+            <column autoIncrement="true" defaultOnNull="false" generationType="ALWAYS" name="ID"
+                    remarks="Identifiant technique" type="NUMBER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TB_COMPTE_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="DT_CREATION" remarks="Champ technique - date de création de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="DT_MODIFICATION" remarks="Champ technique - date de modification de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="IDENTIFIANT" remarks="Identifiant de fonctionnel du compte" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="SOLDE_COMPTE" remarks="montant solde du compte" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="TYPE" remarks="type du compte bancaire" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ID_CLIENT" remarks="identifiant du client dans la table TB_CLIENT" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- ********** CREATION TABLE TB_EMAIL *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TB_EMAIL">
+        <createTable remarks="Table de données liées aux clients" tableName="TB_EMAIL">
+
+            <column autoIncrement="true" defaultOnNull="false" generationType="ALWAYS" name="ID"
+                    remarks="Identifiant technique" type="NUMBER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TB_EMAIL_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="DT_CREATION" remarks="Champ technique - date de création de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="DT_MODIFICATION" remarks="Champ technique - date de modification de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="TYPE" remarks="le type de l'email" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="EMAIL" remarks="adresse email " type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ID_CLIENT" remarks="identifiant du client dans la table TB_CLIENT" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <!-- ********** CREATION TABLE TB_TELEPHONE *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TB_TELEPHONE">
+        <createTable remarks="Table de données liées aux clients" tableName="TB_TELEPHONE">
+
+            <column autoIncrement="true" defaultOnNull="false" generationType="ALWAYS" name="ID"
+                    remarks="Identifiant technique" type="NUMBER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TB_TELEPHONE_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="DT_CREATION" remarks="Champ technique - date de création de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="DT_MODIFICATION" remarks="Champ technique - date de modification de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="TYPE" remarks="le type téléphone" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="NUMERO" remarks="numéro de téphone " type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ID_CLIENT" remarks="identifiant du client dans la table TB_CLIENT" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <!-- ********** CREATION TABLE TB_TRANSACTION_BANCAIRE *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TB_TRANSACTION_BANCAIRE">
+        <createTable remarks="Table de données liées aux clients" tableName="TB_TRANSACTION_BANCAIRE">
+
+            <column autoIncrement="true" defaultOnNull="false" generationType="ALWAYS" name="ID"
+                    remarks="Identifiant technique" type="NUMBER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TB_TRANSACTION_BANCAIRE_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="DT_CREATION" remarks="Champ technique - date de création de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="DT_MODIFICATION" remarks="Champ technique - date de modification de la ligne" type="time">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="IDENTIFIANT" remarks="identifiant fonctionnel de la transaction" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ID_COMPTE" remarks="identifiant du compte de la transaction " type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="TYPE_TRANSACTION" remarks="le type de transaction" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="SOLDE_DE_BASE" remarks="solde du compte lors de la transaction" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="MONTANT" remarks="montant de la transaction" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+
+    <!-- ********** CREATION TABLE TR_CIVITE *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TR_CIVITE">
+        <createTable remarks="Table des données de réference pour la civilité " tableName="TR_CIVITE">
+
+            <column defaultOnNull="false" name="CODE" remarks="code technique" type="varchar(5)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TR_CIVITE_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="LIBELLE" remarks="libelle de la civilité" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <!-- ********** CREATION TABLE TR_SEXE *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TR_SEXE">
+        <createTable remarks="Table des données de réference pour le sexe " tableName="TR_SEXE">
+
+            <column defaultOnNull="false" name="CODE" remarks="code technique" type="varchar(5)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TR_SEXE_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="LIBELLE" remarks="libelle  sexe" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <!-- ********** CREATION TABLE TR_SEXE *********** -->
+    <changeSet author="ibrahima-ndiaye" id="CREATION_TABLE-TR_SITUATION_FAMILLIALE">
+        <createTable remarks="Table des données de réference pour la situation familliale "
+                     tableName="TR_SITUATION_FAMILLIALE">
+
+            <column defaultOnNull="false" name="CODE" remarks="code technique" type="varchar(5)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TR_SITUATION_FAMILLIALE_PK"
+                             primaryKeyTablespace="${ts.index}"/>
+            </column>
+
+            <column name="LIBELLE" remarks="libelle de la situaltion familliale" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <!-- ***************************************** CREATION DES FOREIGNKEY ******************************************************************* -->
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_FOREIGNKEY-TB_CLIENT-TB_COMPTE-ID_CLIENT">
+        <addForeignKeyConstraint baseColumnNames="ID_CLIENT" baseTableName="TB_COMPTE"
+                                 constraintName="TB_COMPTE_FK_ID_CLIENT" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="TB_CLIENT" validate="true"/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_FOREIGNKEY-TB_CLIENT-TB_CLIENT_PM-ID_CLIENT">
+        <addForeignKeyConstraint baseColumnNames="ID_CLIENT" baseTableName="TB_CLIENT_PM"
+                                 constraintName="TB_CLIENT_PM_FK_ID_CLIENT" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="TB_CLIENT" validate="true"/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_FOREIGNKEY-TB_CLIENT-TB_CLIENT_PP">
+        <addForeignKeyConstraint baseColumnNames="ID_CLIENT" baseTableName="TB_CLIENT_PP"
+                                 constraintName="TB_CLIENT_PP_FK_ID_CLIENT" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="TB_CLIENT" validate="true"/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_FOREIGNKEY-TB_COMPTE-TB_TRANSACTION_BANCAIRE">
+        <addForeignKeyConstraint baseColumnNames="ID_COMPTE" baseTableName="TB_TRANSACTION_BANCAIRE"
+                                 constraintName="TB_TRANSACTION_BANCAIRE_FK_ID_COMPTE" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="TB_COMPTE" validate="true"/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_FOREIGNKEY-TB_CLIENT_PP-TR_SEXE">
+        <addForeignKeyConstraint baseColumnNames="CODE_SEXE" baseTableName="TB_CLIENT_PP"
+                                 constraintName="TB_CLIENT_PP_FK_CODE_SEXE" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="CODE" referencedTableName="TR_SEXE" validate="true"/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_FOREIGNKEY-TB_CLIENT_PP-TR_CIVITE">
+        <addForeignKeyConstraint baseColumnNames="CODE_CIVILITE" baseTableName="TB_CLIENT_PP"
+                                 constraintName="TB_CLIENT_PP_FK_CODE_CIVILITE" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="CODE" referencedTableName="TR_CIVITE" validate="true"/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_FOREIGNKEY-TB_CLIENT_PP-TR_SITUATION_FAMILLIALE">
+        <addForeignKeyConstraint baseColumnNames="CODE_SITUATION_FAMILLIALE" baseTableName="TB_CLIENT_PP"
+                                 constraintName="TB_CLIENT_PP_FK_CODE_SITUATION_FAMILLIALE" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="CODE" referencedTableName="TR_SITUATION_FAMILLIALE"
+                                 validate="true"/>
+    </changeSet>
+
+    <!-- ***************************************** INSERTION DES DONNEES ******************************************************************* -->
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SEXE-1">
+        <insert tableName="TR_SEXE">
+            <column name="CODE" value="01"/>
+            <column name="LIBELLE" value="Masculin"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SEXE-2">
+        <insert tableName="TR_SEXE">
+            <column name="CODE" value="02"/>
+            <column name="LIBELLE" value="Féminin"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SEXE-3">
+        <insert tableName="TR_SEXE">
+            <column name="CODE" value="03"/>
+            <column name="LIBELLE" value="Autre"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_CIVITE-1">
+        <insert tableName="TR_CIVITE">
+            <column name="CODE" value="01"/>
+            <column name="LIBELLE" value="Monsieur"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_CIVITE-2">
+        <insert tableName="TR_CIVITE">
+            <column name="CODE" value="02"/>
+            <column name="LIBELLE" value="Madame"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_CIVITE-3">
+        <insert tableName="TR_CIVITE">
+            <column name="CODE" value="03"/>
+            <column name="LIBELLE" value="Mademoiselle"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SITUATION_FAMILLIALE-1">
+        <insert tableName="TR_SITUATION_FAMILLIALE">
+            <column name="CODE" value="01"/>
+            <column name="LIBELLE" value="Marié"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SITUATION_FAMILLIALE-2">
+        <insert tableName="TR_SITUATION_FAMILLIALE">
+            <column name="CODE" value="02"/>
+            <column name="LIBELLE" value="Pacsé"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SITUATION_FAMILLIALE-3">
+        <insert tableName="TR_SITUATION_FAMILLIALE">
+            <column name="CODE" value="03"/>
+            <column name="LIBELLE" value="Divorcé"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SITUATION_FAMILLIALE-4">
+        <insert tableName="TR_SITUATION_FAMILLIALE">
+            <column name="CODE" value="04"/>
+            <column name="LIBELLE" value="Séparé"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SITUATION_FAMILLIALE-5">
+        <insert tableName="TR_SITUATION_FAMILLIALE">
+            <column name="CODE" value="05"/>
+            <column name="LIBELLE" value="Célibataire"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="AJOUT_DONNEES-TR_SITUATION_FAMILLIALE-6">
+        <insert tableName="TR_SITUATION_FAMILLIALE">
+            <column name="CODE" value="06"/>
+            <column name="LIBELLE" value="Veuf"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet author="ibrahima-ndiaye" id="TAG-V0">
+        <tagDatabase tag="V1"/>
+    </changeSet>
+
+</databaseChangeLog>

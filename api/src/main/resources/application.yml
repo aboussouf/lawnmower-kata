@@ -1,0 +1,4 @@
+server:
+  port: 5543
+input: classpath:/input.txt
+output: classpath:/out.txt

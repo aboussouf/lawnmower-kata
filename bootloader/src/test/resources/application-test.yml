@@ -1,0 +1,4 @@
+solaris:
+  api:
+    account:
+      url: https://www.fake-url.com/
